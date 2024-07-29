@@ -20,9 +20,9 @@ app.post("/webhook", (req, res) => {
     response: res,
   });
 
-  // console.log(
-  //     "Dialogflow Request headers: " + JSON.stringify(req.headers)
-  // );
+  console.log(
+    "Dialogflow Request headers: " + JSON.stringify(req.headers)
+  );
   console.log("Dialogflow Request body: " + JSON.stringify(req.body));
 
   function welcome(agent) {
@@ -33,25 +33,27 @@ app.post("/webhook", (req, res) => {
     agent.add(`I didn't understand`);
     agent.add(`I'm sorry, can you try again?`);
   }
-  function calculatecircle(agent) {
-    let r = agent.parameters.number;
-    let pi = Math.PI.toFixed(2)
-    let result = pi * r **2;
-    let flexMessage = {
+
+  function calculateArea(agent) {
+    let width = agent.parameters.width;
+    let length = agent.parameters.length;
+    let result = width * length;
+
+    const flexMessage = {
       type: "flex",
       altText: "Flex Message",
       contents: {
         "type": "bubble",
         "hero": {
           "type": "image",
+          "url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSquHMaNnug3BPNukvxmRCNlZkCwydeH4mgNA&s",
           "size": "full",
           "aspectRatio": "20:13",
           "aspectMode": "cover",
           "action": {
             "type": "uri",
-            "uri": "https://www.trueplookpanya.com/learning/detail/13431"
-          },
-          "url": "https://bucket.ex10.tech/images/1cc9c4e8-4d7e-11ef-891c-0242ac120003/originalContentUrl.png"
+            "uri": "https://line.me/"
+          }
         },
         "body": {
           "type": "box",
@@ -59,9 +61,9 @@ app.post("/webhook", (req, res) => {
           "contents": [
             {
               "type": "text",
+              "text": "พื้นที่รูปสี่เหลี่ยม" + result + "ตร.ซม.",
               "weight": "bold",
-              "size": "xl",
-              "text": "circle"
+              "size": "md"
             },
             {
               "type": "box",
@@ -76,9 +78,9 @@ app.post("/webhook", (req, res) => {
                   "contents": [
                     {
                       "type": "text",
+                      "text": "ความยาว" + length + "ตร.ซม.",
                       "color": "#aaaaaa",
-                      "size": "sm",
-                      "text": " pi" + pi + "ซม. r" + r + "ซม."
+                      "size": "sm"
                     }
                   ]
                 },
@@ -89,7 +91,7 @@ app.post("/webhook", (req, res) => {
                   "contents": [
                     {
                       "type": "text",
-                      "text": `${result.toFixed(2)} ตร.ซม.`,
+                      "text": "ความกว้าง" + width + "ตร.ซม.",
                       "color": "#aaaaaa",
                       "size": "sm"
                     }
@@ -111,7 +113,98 @@ app.post("/webhook", (req, res) => {
               "action": {
                 "type": "uri",
                 "label": "WEBSITE",
-                "uri": "https://www.trueplookpanya.com/learning/detail/13431"
+                "uri": "https://www.greenygrass.co.th/calculation-area"
+              }
+            }
+          ]
+        }
+      }
+    }
+    let payload = new Payload("LINE", flexMessage, { sendAsMessage: true });
+    agent.add(payload);
+  }
+
+
+  function calculateCircleArea(agent) {
+    let pi = Math.PI
+    let r = agent.parameters.r
+    let result = (pi * r ** 2).toFixed(2);
+
+    const flexMessage = {
+      type: "flex",
+      altText: "Flex Message",
+      contents: {
+        "type": "bubble",
+        "hero": {
+          "type": "image",
+          "url": "https://png.pngtree.com/png-clipart/20210311/original/pngtree-brush-circle-creative-brush-effect-png-image_6020152.jpg",
+          "size": "full",
+          "aspectRatio": "20:13",
+          "aspectMode": "cover",
+          "action": {
+            "type": "uri",
+            "uri": "https://line.me/"
+          }
+        },
+        "body": {
+          "type": "box",
+          "layout": "vertical",
+          "contents": [
+            {
+              "type": "text",
+              "text": "พื้นที่วงกลม :" + result + "ตร.ซม.",
+              "weight": "bold",
+              "size": "md"
+            },
+            {
+              "type": "box",
+              "layout": "vertical",
+              "margin": "lg",
+              "spacing": "sm",
+              "contents": [
+                {
+                  "type": "box",
+                  "layout": "baseline",
+                  "spacing": "sm",
+                  "contents": [
+                    {
+                      "type": "text",
+                      "text": "ความยาวรัศมี" + r + "ตร.ซม.",
+                      "color": "#aaaaaa",
+                      "size": "sm"
+                    }
+                  ]
+                },
+                {
+                  "type": "box",
+                  "layout": "baseline",
+                  "spacing": "sm",
+                  "contents": [
+                    {
+                      "type": "text",
+                      "text": "ความยาวรัศมี" + r + "ตร.ซม.",
+                      "color": "#aaaaaa",
+                      "size": "sm"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "footer": {
+          "type": "box",
+          "layout": "vertical",
+          "spacing": "sm",
+          "contents": [
+            {
+              "type": "button",
+              "style": "primary",
+              "height": "sm",
+              "action": {
+                "type": "uri",
+                "label": "WEBSITE",
+                "uri": "https://www.smartmathpro.com/article/circle-m3/"
               }
             },
             {
@@ -127,25 +220,27 @@ app.post("/webhook", (req, res) => {
     let payload = new Payload("LINE", flexMessage, { sendAsMessage: true });
     agent.add(payload);
   }
-  function calculatetriangle(agent) {
+
+
+  function calculateTriangleArea(agent) {
     let base = agent.parameters.base;
     let height = agent.parameters.height;
-    let result = 0.5 * base * height ;
-    let flexMessage = {
+    let result = 0.5 * base * height;
+    const flexMessage = {
       type: "flex",
       altText: "Flex Message",
       contents: {
         "type": "bubble",
         "hero": {
           "type": "image",
+          "url": "https://png.pngtree.com/png-clipart/20200401/original/pngtree-3d-triangle-vector-with-six-different-colors-png-image_5336914.jpg",
           "size": "full",
           "aspectRatio": "20:13",
           "aspectMode": "cover",
           "action": {
             "type": "uri",
-            "uri": "https://www.trueplookpanya.com/learning/detail/13431"
-          },
-          "url": "https://bucket.ex10.tech/images/fa3ad476-4d7f-11ef-891c-0242ac120003/originalContentUrl.png"
+            "uri": "https://line.me/"
+          }
         },
         "body": {
           "type": "box",
@@ -153,9 +248,9 @@ app.post("/webhook", (req, res) => {
           "contents": [
             {
               "type": "text",
+              "text": "พื้นที่สามเหลี่ยม :" + result + "ตร.ซม.",
               "weight": "bold",
-              "size": "xl",
-              "text": "triangle"
+              "size": "md"
             },
             {
               "type": "box",
@@ -170,9 +265,9 @@ app.post("/webhook", (req, res) => {
                   "contents": [
                     {
                       "type": "text",
+                      "text": "ฐาน" + base + "ตร.ซม.",
                       "color": "#aaaaaa",
-                      "size": "sm",
-                      "text": `0.5 x ${base} x ${height}` 
+                      "size": "sm"
                     }
                   ]
                 },
@@ -183,7 +278,7 @@ app.post("/webhook", (req, res) => {
                   "contents": [
                     {
                       "type": "text",
-                      "text": `${result.toFixed(2)} ตร.ซม.`,
+                      "text": "ความสูง" + height + "ตร.ซม.",
                       "color": "#aaaaaa",
                       "size": "sm"
                     }
@@ -205,7 +300,7 @@ app.post("/webhook", (req, res) => {
               "action": {
                 "type": "uri",
                 "label": "WEBSITE",
-                "uri": "https://www.trueplookpanya.com/learning/detail/13431"
+                "uri": "https://www.smartmathpro.com/article/circle-m3/"
               }
             },
             {
@@ -221,103 +316,8 @@ app.post("/webhook", (req, res) => {
     let payload = new Payload("LINE", flexMessage, { sendAsMessage: true });
     agent.add(payload);
   }
-  function calculateArea(agent) {
-    let wide = agent.parameters.wide;
-    let lenght = agent.parameters.lenght;
-    let result = wide * lenght;
-    agent.add(
-      "พื้นที่รูปสี่เหลี่ยม กว้าง" + wide + "ซม. ยาว" + lenght + "ซม." + result.toFixed(2) + "ตร.ซม."
-    );
-    let flexMessage = {
-      type: "flex",
-      altText: "Flex Message",
-      contents: {
-        "type": "bubble",
-        "hero": {
-          "type": "image",
-          "size": "full",
-          "aspectRatio": "20:13",
-          "aspectMode": "cover",
-          "action": {
-            "type": "uri",
-            "uri": "https://www.trueplookpanya.com/learning/detail/13431"
-          },
-          "url": "https://bucket.ex10.tech/images/5fa80b59-4d79-11ef-891c-0242ac120003/originalContentUrl.png"
-        },
-        "body": {
-          "type": "box",
-          "layout": "vertical",
-          "contents": [
-            {
-              "type": "text",
-              "weight": "bold",
-              "size": "xl",
-              "text": "rectangle"
-            },
-            {
-              "type": "box",
-              "layout": "vertical",
-              "margin": "lg",
-              "spacing": "sm",
-              "contents": [
-                {
-                  "type": "box",
-                  "layout": "baseline",
-                  "spacing": "sm",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "color": "#aaaaaa",
-                      "size": "sm",
-                      "text": "กว้าง" + wide + "ซม. ยาว" + lenght + "ซม."
-                    }
-                  ]
-                },
-                {
-                  "type": "box",
-                  "layout": "baseline",
-                  "spacing": "sm",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": `${result.toFixed(2)} ตร.ซม.`,
-                      "color": "#aaaaaa",
-                      "size": "sm"
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        },
-        "footer": {
-          "type": "box",
-          "layout": "vertical",
-          "spacing": "sm",
-          "contents": [
-            {
-              "type": "button",
-              "style": "primary",
-              "height": "sm",
-              "action": {
-                "type": "uri",
-                "label": "WEBSITE",
-                "uri": "https://www.trueplookpanya.com/learning/detail/13431"
-              }
-            },
-            {
-              "type": "box",
-              "layout": "vertical",
-              "contents": [],
-              "margin": "sm"
-            }
-          ]
-        }
-      }
-    }
-    let payload = new Payload("LINE", flexMessage, { sendAsMessage: true });
-    agent.add(payload);
-  }
+
+
 
   function bodyMassIndex(agent) {
     let weight = agent.parameters.weight;
@@ -435,11 +435,12 @@ app.post("/webhook", (req, res) => {
   intentMap.set("Default Welcome Intent", welcome);
   intentMap.set("Default Fallback Intent", fallback);
   intentMap.set("BMI - custom - yes", bodyMassIndex);
-  intentMap.set("area-rectangle - custom - yes", calculateArea);
-  intentMap.set("area - circle - custom - yes", calculatecircle);
-  intentMap.set("area - triangle - custom - yes", calculatetriangle);
+  intentMap.set("area - rectangle - custom - yes", calculateArea);
+  intentMap.set("area - circle - custom - yes", calculateCircleArea);
+  intentMap.set("area - Triangle - custom - yes", calculateTriangleArea);
   agent.handleRequest(intentMap);
-});
+}
+);
 
 app.listen(port, () => {
   console.log("Server is running at http://localhost:" + port);
