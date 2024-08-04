@@ -127,8 +127,8 @@ app.post("/webhook", (req, res) => {
 
   function calculateCircleArea(agent) {
     let pi = Math.PI
-    let r = agent.parameters.r
-    let result = (pi * r ** 2).toFixed(2);
+    let radius = agent.parameters.r
+    let result = (pi *  radius ** 2).toFixed(2);
 
     const flexMessage = {
       type: "flex",
@@ -169,7 +169,7 @@ app.post("/webhook", (req, res) => {
                   "contents": [
                     {
                       "type": "text",
-                      "text": "ความยาวรัศมี" + r + "ตร.ซม.",
+                      "text": "ความยาวรัศมี" + radius + "ตร.ซม.",
                       "color": "#aaaaaa",
                       "size": "sm"
                     }
@@ -182,7 +182,7 @@ app.post("/webhook", (req, res) => {
                   "contents": [
                     {
                       "type": "text",
-                      "text": "ความยาวรัศมี" + r + "ตร.ซม.",
+                      "text": "ความยาวรัศมี" + radius + "ตร.ซม.",
                       "color": "#aaaaaa",
                       "size": "sm"
                     }
